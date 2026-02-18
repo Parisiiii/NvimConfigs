@@ -1,9 +1,5 @@
 return require("lazy").setup({
     {
-        "folke/tokyonight.nvim",
-        priority = 1000
-    },
-    {
         "nvim-tree/nvim-tree.lua",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
@@ -84,5 +80,55 @@ return require("lazy").setup({
                 }
             })
         end
-    }
+    },
+    {
+    "Shatur/neovim-ayu",
+    config = function()
+        require('ayu').setup({
+            mirage = false,
+            terminal = false,
+            overrides = {},
+        })
+        vim.cmd('colorscheme ayu-dark')
+    end
+    },
+    {
+    "stevearc/conform.nvim",
+    event = {"BufWritePre"},
+    cmd = {"ConformInfo"},
+    config = function()
+        require("plugins.formatter")
+    end,
+    },
+    {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = function()
+        require("nvim-autopairs").setup({
+            check_ts = true,
+            ts_config = {
+                lua = { "string" },
+                java = false
+            },
+            disable_filetype = { "TelescopePrompt", "vim" },
+        })
+
+        local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+        local cmp = require("cmp")
+        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    end,
+    },
+    {
+    "windwp/nvim-ts-autotag",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+        require("nvim-ts-autotag").setup({
+            opts = {
+                enable_close = true,
+                enable_rename = true,
+                enable_close_on_slash = true
+            }
+        })
+    end,
+    },
 })
